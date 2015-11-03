@@ -15,10 +15,6 @@ then
 	isvalid="NO"
 fi
 }
-
-
-echo "======== Checking ssl ========="
-#printf "%-30s - - - - - - %-25s - - - %s \n" "Site" "Last day valid" "Is Valid Now"
 for site in $sites
 do
 echo | openssl s_client -connect $site:443 2>&1 | sed --quiet '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'>/tmp/cert
@@ -27,16 +23,13 @@ echo | openssl s_client -connect $site:443 2>&1 | sed --quiet '/-BEGIN CERTIFICA
 lastday=$(openssl x509 -noout -enddate -in /tmp/cert 2>/dev/null | cut -d '=' -f 2)
 
 validate "$lastday"
-lastdayout=$(date --date="$lastday" +%d.%m.%y)
+lastdayout=$(date --date="$lastday" +%d.%m.%Y)
 if [ $isvalid == "NO" ] 
 then
 	printf "%-30s %-25s %s \n" "$site" "$isvalid" "--.--.--"
 else
 	printf "%-30s %-25s %s \n" "$site" "$isvalid" "$lastdayout"
 fi
-
-
-#echo "$site" "- - - - - - " "$lastday"
 
 rm /tmp/cert
 done
