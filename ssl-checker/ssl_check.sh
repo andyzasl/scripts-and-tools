@@ -17,7 +17,9 @@ fi
 }
 for site in $sites
 do
-echo | openssl s_client -connect $site:443 2>&1 | sed --quiet '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'>/tmp/cert
+
+echo | openssl s_client -servername "$site" -connect "$site":443 2>&1 | sed --quiet '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'>/tmp/cert
+#echo | openssl s_client -connect $site:443 2>&1 | sed --quiet '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'>/tmp/$site.pem
 #lastday=$(echo | openssl s_client -connect $site:443 2>/dev/null | openssl x509 -noout -dates | grep notAfter| cut -d '=' -f 2)
 
 lastday=$(openssl x509 -noout -enddate -in /tmp/cert 2>/dev/null | cut -d '=' -f 2)
