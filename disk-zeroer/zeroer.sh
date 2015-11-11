@@ -2,7 +2,9 @@
 #script to zero all free space
 
 minfreespace=$((2*1024*1024))
-dir_to_zero="/tmp"
+dir_to_zero="/home/supportit"
+
+
 #df -l $dir_to_zero | awk '{ print $4}' | tail -n 1
 
 #create dir to put tmp files in
@@ -12,10 +14,10 @@ echo Our tmp will be in $tmpdir
 while true
 do
 newtmp=$(mktemp --tmpdir=$tmpdir)
-dd if=/dev/zero of=$newtmp count=1024 bs=1M status=none
-freespace=$(df -l $dir_to_zero | awk '{ print $4}' | tail -n 1)
+dd if=/dev/zero of=$newtmp count=1024 bs=1M >>/dev/null 2>&1
+freespace=$(df --direct $dir_to_zero | awk '{ print $4}' | tail -n 1)
 echo Free=$freespace Kb
-if [[ $freespace < $minfreespace ]]
+if [ "$freespace" -lt "$minfreespace" ]
     then
 	echo "Target minimal space reached"
 	break
