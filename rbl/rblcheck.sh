@@ -97,7 +97,7 @@ do
             exitStatus=1
 			bl="http://$(echo "$blURL" | sed -e "s/IP/$ip/g")"
 			echo "${ip} is listed in ${blName}  -- see $bl"
-			echo $result
+#			echo $result
 		fi
 	  done
 done
