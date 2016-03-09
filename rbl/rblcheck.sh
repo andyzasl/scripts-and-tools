@@ -85,7 +85,7 @@ do
 
 	# 203.1.2.3 --> 3.2.1.203
 	reverseip=`echo -n ${ip}. | tac -s'.'`
-	echo REV=$reverseip
+#	echo REV=$reverseip
 	echo "$blacklists" |
 	  grep -vE '(^ *#|^ *$)' |
 	  while read blName blDNS blURL
